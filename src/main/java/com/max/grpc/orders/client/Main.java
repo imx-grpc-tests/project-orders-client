@@ -2,6 +2,8 @@
 package com.max.grpc.orders.client;
 
 import com.max.grpc.orders.proto.FoodItem;
+import com.max.grpc.orders.proto.OrderReceipt;
+
 import org.apache.log4j.Logger;
 
 import java.util.List;
@@ -18,9 +20,15 @@ public class Main {
 
         List<String> itemIds = menuItems.stream().map(FoodItem::getId).collect(Collectors.toList());
         logger.info("Ordering all items...");
-        client.makeOrder(itemIds);
 
-        logger.info("Response received, shutting down...");
+        OrderReceipt receipt = client.makeOrder(itemIds);
+        if (receipt != null) {
+            logger.info(LogUtils.printReceipt(receipt));
+        } else {
+            logger.error("Order receipt is empty");
+        }
+
+        logger.info("Shutting down...");
         client.shutdown();
     }
 }

@@ -2,6 +2,7 @@
 package com.max.grpc.orders.client;
 
 import com.google.protobuf.Empty;
+
 import com.max.grpc.orders.proto.*;
 import com.max.grpc.orders.proto.MenuServiceGrpc.MenuServiceBlockingStub;
 import com.max.grpc.orders.proto.OrderServiceGrpc.OrderServiceBlockingStub;
@@ -42,21 +43,17 @@ public class CafeClient {
         }
     }
 
-    public void makeOrder(List<String> items) {
+    public OrderReceipt makeOrder(List<String> items) {
         logger.info("Sending order request...");
         try {
             Order order = Order.newBuilder().addAllItemIds(items).build();
             OrderReceipt receipt = orderStub.makeOrder(order);
-
-            String logString = String.format(
-                "Order was made, %d items with total price %d $",
-                receipt.getItemsCount(),
-                receipt.getTotalPrice()
-            );
-            logger.info(logString);
+            logger.info("Order was made successfully, receipt received");
+            return receipt;
         }
         catch (StatusRuntimeException ex) {
             logger.fatal("Cannot make an order, resource unavailable");
+            return null;
         }
     }
 
