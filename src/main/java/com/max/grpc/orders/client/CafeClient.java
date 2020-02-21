@@ -23,11 +23,9 @@ public class CafeClient {
     private OrderServiceBlockingStub orderStub;
 
     public CafeClient(String host, int port) {
-        var channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext().build();
-        this.managedChannel = channel;
-
-        this.menuStub = MenuServiceGrpc.newBlockingStub(channel);
-        this.orderStub = OrderServiceGrpc.newBlockingStub(channel);
+        this.managedChannel = ManagedChannelBuilder.forAddress(host, port).usePlaintext().build();
+        this.menuStub = MenuServiceGrpc.newBlockingStub(managedChannel);
+        this.orderStub = OrderServiceGrpc.newBlockingStub(managedChannel);
     }
 
     public CafeMenu getMenu() {
