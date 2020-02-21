@@ -17,10 +17,10 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class CafeClient {
-    private Logger logger = Logger.getLogger(CafeClient.class);
-    private ManagedChannel managedChannel;
-    private MenuServiceBlockingStub menuStub;
-    private OrderServiceBlockingStub orderStub;
+    private final Logger logger = Logger.getLogger(CafeClient.class);
+    private final ManagedChannel managedChannel;
+    private final MenuServiceBlockingStub menuStub;
+    private final OrderServiceBlockingStub orderStub;
 
     public CafeClient(String host, int port) {
         this.managedChannel = ManagedChannelBuilder.forAddress(host, port).usePlaintext().build();
