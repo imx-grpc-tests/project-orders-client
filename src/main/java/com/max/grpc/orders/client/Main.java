@@ -1,34 +1,23 @@
 
 package com.max.grpc.orders.client;
 
-import com.max.grpc.orders.proto.FoodItem;
-import com.max.grpc.orders.proto.OrderReceipt;
+import com.max.grpc.orders.client.rest.RestServer;
 
 import org.apache.log4j.Logger;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.io.IOException;
 
 public class Main {
     private static Logger logger = Logger.getLogger(Main.class);
+    private static final int GRPC_CLIENT_PORT = 8000;
+    private static final int REST_SERVER_PORT = 8080;
 
-    public static void main(String[] args) {
-        var client = new CafeClient("localhost", 8000);
-
-        logger.info("Getting menu from cafe...");
-        List<FoodItem> menuItems = client.getMenu().getItemsList();
-
-        List<String> itemIds = menuItems.stream().map(FoodItem::getId).collect(Collectors.toList());
-        logger.info("Ordering all items...");
-
-        OrderReceipt receipt = client.makeOrder(itemIds);
-        if (receipt != null) {
-            logger.info(LogUtils.printReceipt(receipt));
-        } else {
-            logger.error("Order receipt is empty");
-        }
-
-        logger.info("Shutting down...");
-        client.shutdown();
+    public static void main(String[] args) throws IOException {
+        var client = new CafeClient("localhost", GRPC_CLIENT_PORT);
+        var server = new RestServer(REST_SERVER_PORT, client);
+        server.start();
+        logger.info("Hit enter to stop it...");
+        System.in.read();
+        server.stop();
     }
 }
