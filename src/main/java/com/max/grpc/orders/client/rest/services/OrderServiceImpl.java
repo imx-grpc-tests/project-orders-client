@@ -3,7 +3,7 @@ package com.max.grpc.orders.client.rest.services;
 
 import com.max.grpc.orders.client.CafeClient;
 import com.max.grpc.orders.client.rest.mappers.FoodItemMapperImpl;
-import com.max.grpc.orders.client.rest.models.ApiFoodItem;
+import com.max.grpc.orders.client.rest.mappers.OrderReceiptMapperImpl;
 import com.max.grpc.orders.client.rest.models.ApiOrderReceipt;
 import com.max.grpc.orders.proto.OrderReceipt;
 
@@ -15,17 +15,18 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Path("/orders")
 public class OrderServiceImpl {
     private CafeClient cafeClient;
     private FoodItemMapperImpl foodItemMapper;
+    private OrderReceiptMapperImpl orderReceiptMapper;
     private final Logger logger = Logger.getLogger(OrderServiceImpl.class);
 
     public OrderServiceImpl(CafeClient cafeClient, FoodItemMapperImpl foodItemMapper) {
         this.cafeClient = cafeClient;
         this.foodItemMapper = foodItemMapper;
+        this.orderReceiptMapper = new OrderReceiptMapperImpl();
     }
 
     @POST
@@ -37,16 +38,7 @@ public class OrderServiceImpl {
         OrderReceipt receipt = cafeClient.makeOrder(itemIds);
         logger.info("Order made, receipt received");
 
-        ApiOrderReceipt responseReceipt = new ApiOrderReceipt();
-        responseReceipt.setId(receipt.getId());
-        responseReceipt.setDate(receipt.getDate());
-        List<ApiFoodItem> resItems = receipt.getItemsList().stream()
-            .map(foodItemMapper::protoToRestModel)
-            .collect(Collectors.toList());
-        responseReceipt.setItems(resItems);
-        responseReceipt.setTotalPrice(receipt.getTotalPrice());
-
         logger.info("Response sent");
-        return responseReceipt;
+        return orderReceiptMapper.protoToRestModel(receipt);
     }
 }
