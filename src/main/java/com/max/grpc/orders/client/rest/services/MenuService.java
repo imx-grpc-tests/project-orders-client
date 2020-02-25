@@ -3,39 +3,27 @@ package com.max.grpc.orders.client.rest.services;
 
 import com.max.grpc.orders.client.CafeClient;
 import com.max.grpc.orders.client.rest.mappers.CafeMenuMapperImpl;
-import com.max.grpc.orders.client.rest.mappers.FoodItemMapperImpl;
 import com.max.grpc.orders.client.rest.models.ApiCafeMenu;
 import com.max.grpc.orders.proto.CafeMenu;
 
 import org.apache.log4j.Logger;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-
-@Path("/menu")
-public class MenuServiceImpl {
+public class MenuService {
     private CafeClient cafeClient;
-    private FoodItemMapperImpl foodItemMapper;
     private CafeMenuMapperImpl cafeMenuMapper;
-    private final Logger logger = Logger.getLogger(MenuServiceImpl.class);
+    private final Logger logger = Logger.getLogger(MenuService.class);
 
-    public MenuServiceImpl(CafeClient cafeClient, FoodItemMapperImpl foodItemMapper) {
+    public MenuService(CafeClient cafeClient, CafeMenuMapperImpl cafeMenuMapper) {
         this.cafeClient = cafeClient;
-        this.foodItemMapper = foodItemMapper;
-        this.cafeMenuMapper = new CafeMenuMapperImpl();
+        this.cafeMenuMapper = cafeMenuMapper;
     }
 
-    @GET
-    @Path("/")
-    @Produces(MediaType.APPLICATION_JSON)
     public ApiCafeMenu getMenu() {
         logger.info("Getting menu from cafe...");
         CafeMenu cafeMenu = cafeClient.getMenu();
         logger.info("Received " + cafeMenu.getItemsCount() + " dishes");
 
-        logger.info("Response sent");
+        logger.info("Forming response...");
         return cafeMenuMapper.protoToRestModel(cafeMenu);
     }
 }
