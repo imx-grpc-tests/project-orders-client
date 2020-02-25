@@ -36,7 +36,7 @@ public class RestServer {
     }
 
     public void stop() {
-        if (server != null || server.isStarted()) {
+        if (server != null && server.isStarted()) {
             server.shutdownNow();
             logger.info("Server stopped");
         } else {
