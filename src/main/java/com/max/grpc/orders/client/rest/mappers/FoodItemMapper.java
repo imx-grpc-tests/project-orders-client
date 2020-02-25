@@ -11,7 +11,7 @@ import org.mapstruct.Mapping;
 public interface FoodItemMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "title", target = "title")
-    @Mapping(source = "type", target = "foodType")
+    @Mapping(source = "type", target = "type")
     @Mapping(source = "weight", target = "weight")
     @Mapping(source = "price", target = "price")
     ApiFoodItem protoToRestModel(FoodItem foodItem);

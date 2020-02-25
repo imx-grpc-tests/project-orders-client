@@ -6,7 +6,7 @@ import com.max.grpc.orders.proto.FoodType;
 public class ApiFoodItem {
     private String id;
     private String title;
-    private FoodType foodType;
+    private FoodType type;
     private double weight;
     private int price;
 
@@ -26,12 +26,12 @@ public class ApiFoodItem {
         this.title = title;
     }
 
-    public FoodType getFoodType() {
-        return foodType;
+    public FoodType getType() {
+        return type;
     }
 
-    public void setFoodType(FoodType foodType) {
-        this.foodType = foodType;
+    public void setType(FoodType type) {
+        this.type = type;
     }
 
     public double getWeight() {
