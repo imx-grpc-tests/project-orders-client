@@ -2,6 +2,7 @@
 package com.max.grpc.orders.client.rest.services;
 
 import com.max.grpc.orders.client.CafeClient;
+import com.max.grpc.orders.client.rest.mappers.FoodItemMapperImpl;
 import com.max.grpc.orders.client.rest.models.ApiFoodItem;
 import com.max.grpc.orders.client.rest.models.ApiOrderReceipt;
 import com.max.grpc.orders.proto.OrderReceipt;
@@ -19,10 +20,12 @@ import java.util.stream.Collectors;
 @Path("/orders")
 public class OrderServiceImpl {
     private CafeClient cafeClient;
+    private FoodItemMapperImpl foodItemMapper;
     private final Logger logger = Logger.getLogger(OrderServiceImpl.class);
 
-    public OrderServiceImpl(CafeClient cafeClient) {
+    public OrderServiceImpl(CafeClient cafeClient, FoodItemMapperImpl foodItemMapper) {
         this.cafeClient = cafeClient;
+        this.foodItemMapper = foodItemMapper;
     }
 
     @POST
@@ -38,7 +41,7 @@ public class OrderServiceImpl {
         responseReceipt.setId(receipt.getId());
         responseReceipt.setDate(receipt.getDate());
         List<ApiFoodItem> resItems = receipt.getItemsList().stream()
-            .map(ApiFoodItem::from)
+            .map(foodItemMapper::protoToRestModel)
             .collect(Collectors.toList());
         responseReceipt.setItems(resItems);
         responseReceipt.setTotalPrice(receipt.getTotalPrice());

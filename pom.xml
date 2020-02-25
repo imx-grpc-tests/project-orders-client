@@ -12,6 +12,7 @@
         <jersey.version>2.29</jersey.version>
         <grizzly.version>2.4.3</grizzly.version>
         <jaxrs.version>2.1.1</jaxrs.version>
+        <org.mapstruct.version>1.3.1.Final</org.mapstruct.version>
 
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
@@ -26,6 +27,22 @@
                 <configuration>
                     <source>{maven.compiler.source}</source>
                     <target>{maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>11</source>
+                    <target>11</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${org.mapstruct.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
         </plugins>
@@ -89,6 +106,11 @@
             <artifactId>jersey-media-json-jackson</artifactId>
             <version>2.30.1</version>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${org.mapstruct.version}</version>
         </dependency>
 
         <dependency>

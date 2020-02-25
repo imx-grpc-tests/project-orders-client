@@ -1,7 +1,6 @@
 
 package com.max.grpc.orders.client.rest.models;
 
-import com.max.grpc.orders.proto.FoodItem;
 import com.max.grpc.orders.proto.FoodType;
 
 public class ApiFoodItem {
@@ -49,15 +48,5 @@ public class ApiFoodItem {
 
     public void setPrice(int price) {
         this.price = price;
-    }
-
-    public static ApiFoodItem from(FoodItem protoItem) {
-        var responseItem = new ApiFoodItem();
-        responseItem.setId(protoItem.getId());
-        responseItem.setTitle(protoItem.getTitle());
-        responseItem.setFoodType(protoItem.getType());
-        responseItem.setWeight(protoItem.getWeight());
-        responseItem.setPrice(protoItem.getPrice());
-        return responseItem;
     }
 }

@@ -2,6 +2,7 @@
 package com.max.grpc.orders.client.rest.services;
 
 import com.max.grpc.orders.client.CafeClient;
+import com.max.grpc.orders.client.rest.mappers.FoodItemMapperImpl;
 import com.max.grpc.orders.client.rest.models.ApiCafeMenu;
 import com.max.grpc.orders.client.rest.models.ApiFoodItem;
 import com.max.grpc.orders.proto.CafeMenu;
@@ -18,10 +19,12 @@ import java.util.stream.Collectors;
 @Path("/menu")
 public class MenuServiceImpl {
     private CafeClient cafeClient;
+    private FoodItemMapperImpl foodItemMapper;
     private final Logger logger = Logger.getLogger(MenuServiceImpl.class);
 
-    public MenuServiceImpl(CafeClient cafeClient) {
+    public MenuServiceImpl(CafeClient cafeClient, FoodItemMapperImpl foodItemMapper) {
         this.cafeClient = cafeClient;
+        this.foodItemMapper = foodItemMapper;
     }
 
     @GET
@@ -34,7 +37,7 @@ public class MenuServiceImpl {
 
         ApiCafeMenu responseMenu = new ApiCafeMenu();
         List<ApiFoodItem> resFoodItems = cafeMenu.getItemsList().stream()
-            .map(ApiFoodItem::from)
+            .map(foodItemMapper::protoToRestModel)
             .collect(Collectors.toList());
         responseMenu.setItems(resFoodItems);
 
