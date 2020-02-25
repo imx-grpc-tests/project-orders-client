@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Path("/orders")
-public class OrderServiceImpl implements OrderService {
+public class OrderServiceImpl {
     private CafeClient cafeClient;
     private final Logger logger = Logger.getLogger(OrderServiceImpl.class);
 
@@ -29,7 +29,6 @@ public class OrderServiceImpl implements OrderService {
     @Path("/new")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Override
     public ApiOrderReceipt makeOrder(List<String> itemIds) {
         logger.info("Making order, " + itemIds.size() + " items");
         OrderReceipt receipt = cafeClient.makeOrder(itemIds);

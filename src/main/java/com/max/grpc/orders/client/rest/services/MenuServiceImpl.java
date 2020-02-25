@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Path("/menu")
-public class MenuServiceImpl implements MenuService {
+public class MenuServiceImpl {
     private CafeClient cafeClient;
     private final Logger logger = Logger.getLogger(MenuServiceImpl.class);
 
@@ -27,7 +27,6 @@ public class MenuServiceImpl implements MenuService {
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    @Override
     public ApiCafeMenu getMenu() {
         logger.info("Getting menu from cafe...");
         CafeMenu cafeMenu = cafeClient.getMenu();
