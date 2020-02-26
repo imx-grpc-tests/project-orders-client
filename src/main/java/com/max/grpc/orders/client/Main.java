@@ -1,34 +1,30 @@
 
 package com.max.grpc.orders.client;
 
-import com.max.grpc.orders.proto.FoodItem;
-import com.max.grpc.orders.proto.OrderReceipt;
+import com.max.grpc.orders.client.rest.RestServer;
 
 import org.apache.log4j.Logger;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.io.IOException;
 
 public class Main {
     private static Logger logger = Logger.getLogger(Main.class);
+    private static final int DEFAULT_GRPC_SERVER_PORT = 8000;
+    private static final int DEFAULT_REST_SERVER_PORT = 8080;
+    private static final String CONFIG_PATH = "src/main/resources/server.properties";
 
-    public static void main(String[] args) {
-        var client = new CafeClient("localhost", 8000);
+    public static void main(String[] args) throws IOException {
+        var config = new ConfigLoader(CONFIG_PATH);
+        config.load();
+        int grpcServerPort = config.getGrpcServerPortOrDefault(DEFAULT_GRPC_SERVER_PORT);
+        int restServerPort = config.getRestServerPortOrDefault(DEFAULT_REST_SERVER_PORT);
 
-        logger.info("Getting menu from cafe...");
-        List<FoodItem> menuItems = client.getMenu().getItemsList();
+        var client = new CafeClient("localhost", grpcServerPort);
+        var server = new RestServer(restServerPort, client);
+        server.start();
 
-        List<String> itemIds = menuItems.stream().map(FoodItem::getId).collect(Collectors.toList());
-        logger.info("Ordering all items...");
-
-        OrderReceipt receipt = client.makeOrder(itemIds);
-        if (receipt != null) {
-            logger.info(LogUtils.printReceipt(receipt));
-        } else {
-            logger.error("Order receipt is empty");
-        }
-
-        logger.info("Shutting down...");
-        client.shutdown();
+        logger.info("Hit enter to stop it...");
+        System.in.read();
+        server.stop();
     }
 }
