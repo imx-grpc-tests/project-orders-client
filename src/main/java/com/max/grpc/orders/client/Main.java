@@ -1,6 +1,7 @@
 
 package com.max.grpc.orders.client;
 
+import com.max.grpc.orders.client.grpc.CafeClient;
 import com.max.grpc.orders.client.rest.RestServer;
 
 import org.apache.log4j.Logger;
