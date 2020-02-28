@@ -1,5 +1,5 @@
 
-package com.max.grpc.orders.client;
+package com.max.grpc.orders.client.grpc;
 
 import com.google.protobuf.Empty;
 
@@ -26,6 +26,10 @@ public class CafeClient {
         this.managedChannel = ManagedChannelBuilder.forAddress(host, port).usePlaintext().build();
         this.menuStub = MenuServiceGrpc.newBlockingStub(managedChannel);
         this.orderStub = OrderServiceGrpc.newBlockingStub(managedChannel);
+    }
+
+    public ManagedChannel getManagedChannel() {
+        return managedChannel;
     }
 
     public CafeMenu getMenu() {

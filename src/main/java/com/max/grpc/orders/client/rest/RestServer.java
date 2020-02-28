@@ -1,7 +1,7 @@
 
 package com.max.grpc.orders.client.rest;
 
-import com.max.grpc.orders.client.CafeClient;
+import com.max.grpc.orders.client.grpc.CafeClient;
 
 import org.apache.log4j.Logger;
 import org.glassfish.grizzly.http.server.HttpServer;

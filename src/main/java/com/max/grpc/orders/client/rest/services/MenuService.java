@@ -1,7 +1,7 @@
 
 package com.max.grpc.orders.client.rest.services;
 
-import com.max.grpc.orders.client.CafeClient;
+import com.max.grpc.orders.client.grpc.CafeClient;
 import com.max.grpc.orders.client.rest.mappers.CafeMenuMapperImpl;
 import com.max.grpc.orders.client.rest.models.ApiCafeMenu;
 import com.max.grpc.orders.proto.CafeMenu;
